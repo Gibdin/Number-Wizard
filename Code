@@ -1,0 +1,62 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class NumberWizard : MonoBehaviour
+{
+    int max; //defining the variables. min max to show the range of the possible numbers
+    int min;
+    int guess; //The guess of the computer which is through a typical search algorithim of finding the median in a range and deciding if the searched object is higher or lower. 
+    int attempts; //This is an extra feature which shows the number of attempts it took to guess the players number. 
+    
+    // Start is called before the first frame update
+    void Start()
+    {
+
+        StartGame(); //Start game function. Also used to restart the game after it is finished.
+
+    }
+
+    void StartGame()
+    {
+        max = 1000; //variables are giving values
+        min = 1;
+        guess = 500;
+        attempts = 1;
+
+        Debug.Log("Welcome to Number Wizard!");
+        Debug.Log("Think of a number between " + min + "-" + max); //rules of the game
+        Debug.Log("Is your number higher or lower than " + guess + "?"); 
+        Debug.Log("Click the up arrow to go higher, click the down arrow to go lower, push enter if the guess is correct"); //controls
+        max = max + 1;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow)) //checks for inputs. If the up arrow is pressed the current guess becomes the minimum value and the range decreases. The search algorithim happens again and a new guess is created under the NewGuess() function. 
+        {
+            min = guess;
+            NextGuess();
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow)) //if the down arrow is pressed, the current guess becomes the max and the range decreases. The search algorithim happens again and a new guess is created under the NewGuess() function 
+        {
+            max = guess;
+            NextGuess();
+        }
+        else if (Input.GetKeyDown(KeyCode.Return))//if the enter button is pressed, the game is considered finished and starts again ,while showing how many attempts it took to find the number, rewriting the values to the original.  
+        {
+            Debug.Log("Good game, Well played!");
+            Debug.Log("Attempts: " + attempts);
+            StartGame();
+
+        }
+    }
+
+    void NextGuess() //This function has an equation to decrease the range. This is the searching algorithim. The new guess is then reviewed by the player. A new attempt is added every fail
+    {
+        guess = (min + max) / 2;
+        attempts++;
+        Debug.Log("Is your number higher,lower or equal to " + guess);
+    }
+}
